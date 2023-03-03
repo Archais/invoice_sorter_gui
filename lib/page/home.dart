@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:invoice_sorter/utils/pdfio.dart' show PdfIO;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,12 +41,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _loadInvoices() async {
-    final Directory inspectionDirectory =
-        Directory("/Users/andrew/development/testing_assets");
+    final Directory inspectionDirectory = Directory(
+      "/Users/andrew/development/testing_assets",
+    );
+
     for (FileSystemEntity i in inspectionDirectory.listSync()) {
       File invoice = File(i.path);
       // print(i.statSync().modified);
     }
+
+    PdfIO.test();
 
     // invoices.addAll(items);
     setState(() => _isLoaded = true);
