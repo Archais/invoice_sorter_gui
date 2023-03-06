@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:invoice_sorter/utils/pdfio.dart' show PdfIO;
+import 'package:invoice_sorter/utils/pdfio.dart';
+
+import 'dart:ffi';
+import 'package:ffi/ffi.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -48,9 +51,21 @@ class _HomePageState extends State<HomePage> {
     for (FileSystemEntity i in inspectionDirectory.listSync()) {
       File invoice = File(i.path);
       // print(i.statSync().modified);
-    }
+      pdfIo.pdfioFileOpen(
+        invoice.path.toNativeUtf8().cast<Char>(),
+        Pointer.fromFunction(
+          (Pointer<Void> a, Pointer<Char> b) => "".toNativeUtf8().cast<Char>(),
+        ),
+        "".toNativeUtf8().cast<Void>(),
+        Pointer.fromFunction(
+          (Pointer<Void> a, Pointer<Char> b, Pointer<Void> c) =>
+              "true".toNativeUtf8().cast<Bool>().value,
+        ),
+        "".toNativeUtf8().cast<Void>(),
+      );
 
-    PdfIO.test();
+      print(pdfIo.timezone);
+    }
 
     // invoices.addAll(items);
     setState(() => _isLoaded = true);

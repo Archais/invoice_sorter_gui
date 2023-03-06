@@ -2,16 +2,14 @@
 import 'dart:ffi' as ffi;
 import 'dart:io' show Directory, Platform;
 
+import 'package:invoice_sorter/utils/libpdfio.dart' show PdfIo;
+
 import 'package:path/path.dart' as path;
 
 final ffi.DynamicLibrary pdfIoLib = ffi.DynamicLibrary.open(_libPath);
 
-/// This is a collection of all externalised methods.
-abstract class PdfIO {
-  static void test() {
-    print(pdfIoLib.providesSymbol("pdfioFileOpen"));
-  }
-}
+
+final pdfIo = PdfIo(pdfIoLib);
 
 String get _libPath {
   if (Platform.isMacOS) {
